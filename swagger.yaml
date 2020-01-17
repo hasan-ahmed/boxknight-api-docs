@@ -1,0 +1,929 @@
+swagger: '2.0'
+info:
+  version: 'v1'
+  title: "BoxKnight"
+  description: Welcome to the BoxKnight API Documentation. You can use the BoxKnight API to requests rates, create an order, delete an order, retrieve a shipping label.
+host: api.boxknight.com
+basePath: /v1
+schemes:
+- https
+consumes:
+- application/json
+produces:
+- application/json
+securityDefinitions:
+  OAuth2:
+    type: oauth2
+    flow: application
+    tokenUrl: /auth/token
+    scopes: {}
+    description: >-
+      The BoxKnight API uses OAuth 2.0 with Client Credentials grant type to secure endpoints.
+      Before every request, you must make a POST request to the `/auth/token` endpoint to generate an access `token`.
+      You must then include this token as an `Authorization` header in every authenticated request.
+  Authorization-Header:
+     type: apiKey
+     in: header
+     name: Authorization 
+     description: >- 
+       Once you've generated a `token` with the first step of the OAuth 2.0 flow, you must include a `Authorization` header
+       with the token to make authenticated requests to secure endpoints.
+paths:
+  /auth/token:
+    x-summary: Authentication Token
+    post:
+      description: >-
+        Exchange your username and password for a token that you may include in the header of your requests.
+      x-summary: Generate Token
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AuthTokenRequest'
+      responses:
+        200:
+          description: 'Sucessful Response'
+          schema: 
+            $ref: '#/definitions/AuthTokenResponse'
+  /service:
+    x-summary: Service account
+    get:
+      description: >-
+        Use your admin token to create a service account in order to use our api
+      summary: Create Service account
+      security:
+        - Oauth2: []
+        - Authorization-Header: []
+      responses:
+        200:
+          description: 'Sucessful Response'
+          schema: 
+            $ref: '#/definitions/ServiceAccountResponse'
+  /rates:
+    x-summary: Rates
+    post:
+      description: >-
+        This endpoint retrieves a list of all the shipping rates for a given potential order in accordance to the pricing 
+        structure established when creating your merchant organization. If either the origin postal code or
+        destination postal code is not in BoxKnight's serviceable area, the endpoint will return an empty list.
+      summary: Retrieve Rates
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/RateOptions'
+      security:
+        - Oauth2: []
+        - Authorization-Header: []
+      responses: 
+        200: 
+          description: ''
+          schema:
+            $ref: '#/definitions/ArrayOfRates'
+  /orders:
+    x-summary: Orders
+    post:
+      description: >-
+        This endpoint creates a new order to be delivered by BoxKnight. This operation is treated as a long running task. As soon as your request is validated,
+        you will receive a `200 OK` response with the order `id` while processing continues in the background. 
+      summary: Create a New Order
+      security:
+        - OAuth2: []
+        - Authorization-Header: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/OrderCreateRequest'
+      responses:
+        200:
+          description: ''
+          schema:
+            $ref: '#/definitions/OrderCreateSuccessResponse'
+    get:
+      description: >-
+        This endpoint is doing a batch get all the orders associated with the service account
+      summary: Get multiple orders
+      security:
+        - OAuth2: []
+        - Authorization-Header: []
+      parameters:
+      - name: limit
+        in: query
+        description: limit of results
+        required: false
+        type: number
+      - name: startAt
+        in: query
+        description: last order id, don't put it when first requested it 
+        required: false
+        type: string
+      - name: createdAt
+        in: query
+        description: last order createdAt, don't put it when first requested it 
+        required: false
+        type: string
+      responses:
+        200:
+          description: ''
+          schema:
+            $ref: '#/definitions/ArrayOfOrders'
+  
+  /orders/{id}:
+    x-summary: Get and Delete Order
+    get:
+      description: >-
+        This endpoint get the order's informations.
+      summary: Get Order by Id
+      security:
+        - OAuth2: []
+        - Authorization-Header: []
+      parameters:
+      - name: id
+        in: path
+        description: The id of the order that will be created
+        required: true
+        type: string
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Order"
+          description: 'Successfull response'
+
+    delete:
+      description: >-
+        This endpoint delete the order's informations.
+      summary: Delete Order by Id
+      security:
+        - OAuth2: []
+        - Authorization-Header: []
+      parameters:
+      - name: id
+        in: path
+        description: The id of the order that will be deleted
+        required: true
+        type: string
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Order"
+          description: 'Successfull response'
+
+  /orders/pickups:
+    x-summary: Pickups
+    post:
+      description: >-
+        This endpoint creates a new pickup to be delivered by BoxKnight. 
+      summary: Create a New Pickup
+      security:
+        - OAuth2: []
+        - Authorization-Header: []
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PickupCreateRequest'
+      responses:
+        200:
+          description: ''
+          schema:
+            $ref: '#/definitions/Pickup'
+  
+  /orders/pickups/{id}:
+    x-summary: Get and Delete Pickup
+    get:
+      description: >-
+        This endpoint get the pickup's informations.
+      summary: Get Pickup by Id
+      security:
+        - OAuth2: []
+        - Authorization-Header: []
+      parameters:
+      - name: id
+        in: path
+        description: The id of the pickup that will be created
+        required: true
+        type: string
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Pickup"
+          description: 'Successfull response'
+
+    delete:
+      description: >-
+        This endpoint delete the pickup's informations.
+      summary: Delete Pickup by Id
+      security:
+        - OAuth2: []
+        - Authorization-Header: []
+      parameters:
+      - name: id
+        in: path
+        description: The id of the pickup that will be deleted
+        required: true
+        type: string
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Pickup"
+          description: 'Successfull response'
+          
+  /labels/{id}:
+    x-summary: Labels
+    get:
+      description: >
+        Get the shipping label for an order by specifying the order `ID`.
+      summary: Get label by Order Id
+      security:
+        - OAuth2: []
+        - Authorization-Header: []
+      parameters:
+      - name: id
+        in: path
+        description: ID of the order for which the label is being request.
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successful response, with a representation of the Label.
+          schema:
+            $ref: "#/definitions/Label"
+        404:
+          description: The requested label was not found.  
+definitions:
+  Question:
+    title: Question
+    type: object
+    properties:
+      question:
+        type: string
+      published_at:
+        type: string
+      choices:
+        type: array
+        items:
+          $ref: '#/definitions/Choice'
+    required:
+      - question
+      - published_at
+      - choices
+  Choice:
+    title: Choice
+    type: object
+    properties:
+      votes:
+        type: integer
+        format: int32
+      choice:
+        type: string
+    required:
+      - votes
+      - choice
+  QuestionRequest:
+    title: Question Request
+    type: object
+    properties:
+      question:
+        type: string
+      choices:
+        type: array
+        items:
+          type: string
+    required:
+      - question
+      - choices
+    example:
+      question: Favourite programming language?
+      choices:
+        - Swift
+        - Python
+        - Objective-C
+        - Ruby
+  Label:
+    title: Label
+    type: object
+    properties:
+      labelUrl:
+        type: string
+        description: The direct URL of the shipping label.
+        example: https://label12345.s3.amazonaws.com/BoxKnight-ShippingLabel-123456.pdf
+  Recipient:
+    title: Recipient
+    type: object
+    properties:
+      name:
+        type: string
+        description: The full name of the recipient.
+        example: Charles Carmichael
+      phone: 
+        type: string
+        description: The phone number of the recipient in the following format +1<area code><10 digit phone number>
+        pattern: '^[+]1\d{10}$'
+        example: '+15145573849'
+      notes:
+        type: string
+        description: Notes relating spoecifically to the recipient
+        example: Do not text, call instead.
+    required:
+      - name
+      - phone
+  Address:
+    title: Address
+    type: object
+    properties:
+      street:
+        type: string
+        description: The steet number and street name of the address. If needed, the street number postfix can be included as well.
+        example: 4455A Boul. Poirier
+      unit:
+        type: string
+        description: The unit, apartment and/or business name of the address. This property is not parsed during the geolocation of the address and can be descriptive.
+        example: unit204 - BoxKnight HQ
+      city:
+        type: string
+        description: The city or municipality of the address.
+        example: Montreal
+      province:
+        type: string
+        description: The province of the address. Can be written in short form (i.e. QC)
+        example: Quebec
+      country:
+        type: string
+        description: The country of the address. Can be written in shor form (i.e. CA)
+        example: Canada
+      postalCode:
+        type: string
+        description: The postal code of the address.
+        example: H4R 2A4
+    required:
+      - street
+      - city
+      - province
+      - country
+      - postalCode
+  Geocoded_Address:
+    title: Address
+    type: object
+    properties:
+      number: 
+        type: string
+        description: The street number of the address. 
+        example: 1234
+      street:
+        type: string
+        description: The street name of the address. 
+        example: Boul. Poirier
+      city:
+        type: string
+        description: The city or municipality of the address.
+        example: Montreal
+      province:
+        type: string
+        description: The province of the address. Can be written in short form (i.e. QC)
+        example: Quebec
+      country:
+        type: string
+        description: The country of the address. Can be written in shor form (i.e. CA)
+        example: Canada
+      postalCode:
+        type: string
+        description: The postal code of the address.
+        example: H4R 2A4
+      sublocality:
+        type: string
+        description: The sublocality within a city.
+        example: "Communauté-Urbaine-de-Montréal"
+      location:
+        type: object
+        description: The GPS location of that address
+        $ref: '#/definitions/Location'
+        
+  Location:
+    title: Location
+    type: object
+    properties:
+      lat:
+        type: number
+        description: The lattitude of the address
+        example: 45.4755722
+      lng:
+        type: number
+        description: The longitude of the address
+        example: -73.61911979999999
+  Rate:
+    title: Rate
+    type: object
+    properties:
+      price: 
+        type: number
+        format: double
+        description: The price for the rate in CAD.
+        example: 7.95
+      service:
+        type: string
+        description: A code representing the service level for the rate. Possible values are `SAMEDAY`, `NEXTDAY` and `SCHEDULED`
+        example: "SAMEDAY"
+      name:
+        type: string
+        description: The human readable name for the rate.
+        example: "Boxknight Same-Day Delivery"
+      description: 
+       type: string
+       description: A description of the service provided by this rate and the estimated delivery date.
+       example: "Get your package before the end of the day (2019-10-29)"
+      estimateDay:
+       type: string
+       description: The estimate date of delivery depending on merchant
+       example: "2019-10-29"
+  RateOptions:
+    title: Rate options
+    type: object
+    required:
+      - postalCode
+    properties:
+      postalCode:
+        description: The postal code of the recipient of the order
+        type: string
+        example: 'H4X1Z5'
+      originPostalCode:
+        description: The origin postal code for the order. If this parameter is omitted, it will default to the pickup location set up in your merchant organization.
+        type: string
+        example: 'H4R2A4'  
+  OrderCreateRequest:
+    title: Order Request
+    type: object
+    required:
+      - recipient
+      - recipientAddress
+      - originAddress
+      - packageCount
+    properties:
+      recipient:
+        type: object
+        description: The recipient of the order to be delivered.
+        $ref: '#/definitions/Recipient'
+      recipientAddress:
+        type: object
+        description: The addres of the recipient.
+        $ref: '#/definitions/Address'
+      originAddress:
+        type: object
+        description: The addres of where the order should be picked up from
+        $ref: '#/definitions/Address'
+      packageCount:
+        type: integer
+        format: int32
+        description: The number of separate packagesto be delivered for this order.
+        example: 3
+      signatureRequired:
+        type: boolean
+        description: If True, the delivery will not be completed unless a signature is collected from the recipient. If false, best efforts will be made to contact the recipient upon arrival at the recipient address, but may ultimately be left at the doorstep.
+        example: true
+      service:
+        type: string
+        default: "SCHEDULED"
+        description: >- 
+          The service with which to create the order, which will determine the price and speed of the delivery.
+          The possible values are `SAMEDAY`, `NEXTDAY` or `SCHEDULED`.
+          This can be the `service` from the GET /rates response.
+        example: 'SAMEDAY'
+      notes:
+        type: string
+        description: Any notes related specifically to the destination address.
+        example: The entrance is through the green fence on the left. If no answer, leave behind the black bin.
+          
+      refNumber:
+        type: string
+        description: A reference number from your side that we can use to contact you about the order
+        example: shopifyid1234
+        
+          
+  PickupCreateRequest:
+    title: Pickup Request
+    type: object
+    required:
+      - recipient
+      - recipientAddress
+      - packageCount
+    properties:
+      recipient:
+        type: object
+        description: The recipient of the order to be delivered.
+        $ref: '#/definitions/Recipient'
+      recipientAddress:
+        type: object
+        description: The addres of the recipient.
+        $ref: '#/definitions/Address'
+      completeAfter:
+        type: number
+        description: epoch(milli) of the beginning of pickup window (need to be later than right now)
+        example: 1578439750000
+      completeBefore:
+        type: number
+        description: epoch(milli) of the end of pickup window (need to be later than completeAfter)
+        example: 1578439950000
+      packageCount:
+        type: integer
+        format: int32
+        description: The number of separate packagesto be delivered for this order.
+        example: 3
+      notes:
+        type: string
+        description: Any notes related specifically to the destination address.
+        example: The entrance is through the green fence on the left. If no answer, leave behind the black bin.
+        
+  OrderCreateSuccessResponse:
+    title: Order Create Success Response
+    type: object
+    properties:
+      id:
+        type: string
+        description: The id of the order that will be created
+        example: '11a7838-s74hhd8004-343398583d-33895'
+  Order:
+    title: Order object
+    type: object
+    properties:
+      id:
+        type: string
+        description: The order's id
+        example: "93e11b39-0af8-40bb-742a-912375a09743"
+      createdAt:
+        type: string
+        description: Datetime of the order's creation in ISO time
+        example: "2019-10-25T22:56:06.000Z"
+      createdBy:
+        type: string
+        description: Service account's id
+        example: "93e66b39-0uf8-40bb-742a-911235a09743"
+      merchantId:
+        type: string
+        description: The merchant's id
+        example: "13e11b39-0uf8-40bb-742a-913125a09743"
+      orderStatus: 
+        type: string
+        description: >-
+          The current status of the order, could be 
+          CREATED, GEOCODED, PICKUP_READY, 
+          PICKUP_ASSIGNED, PICKUP_EN_ROUTE, 
+          PICKUP_COMPLETED, DELIVERY_ASSIGNED, 
+          DELIVERY_EN_ROUTE, DELIVERY_COMPLETED
+        example: 'GEOCODED'
+      scanningRequired:
+        type: boolean
+        description: Tell if the order need scanning,
+        example: true
+      validAddress: 
+        type: boolean
+        description: The address validity according to our validator.
+        example: true
+      labelUrl:
+        type: string
+        description: The URL to download the order's label
+        example: "https://label12345.s3.amazonaws.com/BoxKnight-ShippingLabel-1234567.zpl"
+      recipient:
+        type: object
+        description: The recipient of the order to be delivered.
+        $ref: '#/definitions/Recipient'
+      recipientAddress:
+        type: object
+        description: The addres of the recipient.
+        $ref: '#/definitions/Geocoded_Address'
+      originAddress:
+        type: object
+        description: The addres of where the order should be picked up from
+        $ref: '#/definitions/Geocoded_Address'
+      packageCount:
+        type: integer
+        format: int32
+        description: The number of separate packagesto be delivered for this order.
+        example: 3
+      signatureRequired:
+        type: boolean
+        description: If True, the delivery will not be completed unless a signature is collected from the recipient. If false, best efforts will be made to contact the recipient upon arrival at the recipient address, but may ultimately be left at the doorstep.
+        example: true
+      service:
+        type: string
+        description: >- 
+          The service with which to create the order, which will determine the price and speed of the delivery.
+          The possible values are `SAMEDAY`, `NEXTDAY` or `SCHEDULED`.
+          This can be the `service` from the GET /rates response.
+        example: 'SAMEDAY'
+      notes:
+        type: string
+        description: Any notes related specifically to the destination address.
+        example: The entrance is through the green fence on the left. If no answer, leave behind the black bin.
+      refNumber:
+        type: string
+        description: A reference number from your side that we can use to contact you about the order
+        example: shopifyid1234
+
+  Pickup:
+    title: Pickup object
+    type: object
+    properties:
+      id:
+        type: string
+        description: The pickup's id
+        example: "93e11b39-0af8-40bb-742a-912375a09743"
+      createdAt:
+        type: string
+        description: Datetime of the pickup's creation in ISO time
+        example: "2019-10-25T22:56:06.000Z"
+      createdBy:
+        type: string
+        description: Service account's id
+        example: "93e66b39-0uf8-40bb-742a-911235a09743"
+      merchantId:
+        type: string
+        description: The merchant's id
+        example: "13e11b39-0uf8-40bb-742a-913125a09743"
+      completeAfter:
+        type: number
+        description: epoch(milli) of the beginning of pickup window (need to be later than right now)
+        example: 1578439750000
+      completeBefore:
+        type: number
+        description: epoch(milli) of the end of pickup window (need to be later than completeAfter)
+        example: 1578439950000
+      recipient:
+        type: object
+        description: The recipient of the pickup to be delivered.
+        $ref: '#/definitions/Recipient'
+      recipientAddress:
+        type: object
+        description: The addres of the recipient.
+        $ref: '#/definitions/Geocoded_Address'
+      packageCount:
+        type: integer
+        format: int32
+        description: The number of separate packagesto be delivered for this pickup.
+        example: 3
+      notes:
+        type: string
+        description: Any notes related specifically to the destination address.
+        example: The entrance is through the green fence on the left. If no answer, leave behind the black bin.
+          
+  OrderStatusPatchRequest:
+    title: Order Status Patch Request
+    properties:
+      id: 
+        type: string
+        description: The new status of the order. Through the BoxKnight API, the status can only be set to `PICKUP_READY`
+        example: 'PICKUP_READY'
+  AuthTokenRequest:
+    title: Auth Token Request
+    properties:
+      username: 
+        type: string
+        description: The username for the account the auth token is being request for. 
+        example: 'user-serivce-account-test' 
+      password: 
+        type: string
+        description: The password for the account the auth token is being request for. 
+        example: 'userpassword'
+  
+  ServiceAccountResponse:
+    title: Service Account response
+    properties:
+      username: 
+        type: string
+        description: The username for the newly created service account. 
+        example: 'user-serivce-account-test' 
+      password: 
+        type: string
+        description: The password for for the newly created service account. 
+        example: 'userpassword'
+        
+  AuthTokenResponse:
+    title: Auth Token Response
+    properties:
+      token: 
+        type: string
+        description: The Auth token to be included in the Authorization header of your requests
+        example: 'token'
+  ArrayOfRates:
+    type: array
+    items:
+      type: object
+      properties:
+        price: 
+          type: number
+          description: The price for the rate in CAD.
+        service:
+          type: string
+          description: A code representing the service level for the rate. Possible values are `SAMEDAY`, `NEXTDAY` and `SCHEDULED`
+        name:
+          type: string
+          description: The human readable name for the rate.
+        description: 
+          type: string
+          description: A description of the service provided by this rate and the estimated delivery date.
+        estimateDay:
+          type: string
+          description: The estimate date of delivery depending on merchant
+    example:
+      - price: 10
+        service: "NEXTDAY"
+        name: "BoxKnight Next-Day Delivery"
+        description:  "Get your package the next opening day of the merchant (2019-10-30)"
+        estimateDay: "2019-10-30"
+      - price: 12
+        service: "SAMEDAY"
+        name: "BoxKnight Same-Day Delivery"
+        description:  "Get your package before the end of the day (2019-10-29)"  
+        estimateDay: "2019-10-29"
+        
+  ArrayOfOrders:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The order's id
+          example: "93e11b39-0af8-40bb-742a-912375a09743"
+        createdAt:
+          type: string
+          description: Datetime of the order's creation in ISO time
+          example: "2019-10-25T22:56:06.000Z"
+        createdBy:
+          type: string
+          description: Service account's id
+          example: "93e66b39-0uf8-40bb-742a-911235a09743"
+        merchantId:
+          type: string
+          description: The merchant's id
+          example: "13e11b39-0uf8-40bb-742a-913125a09743"
+        orderStatus: 
+          type: string
+          description: >-
+            The current status of the order, could be 
+            CREATED, GEOCODED, PICKUP_READY, 
+            PICKUP_ASSIGNED, PICKUP_EN_ROUTE, 
+            PICKUP_COMPLETED, DELIVERY_ASSIGNED, 
+            DELIVERY_EN_ROUTE, DELIVERY_COMPLETED
+          example: 'GEOCODED'
+        scanningRequired:
+          type: boolean
+          default: true
+          description: Tell if the order need scanning,
+          example: true
+        validAddress: 
+          type: boolean
+          description: The address validity according to our validator.
+          example: true
+        labelUrl:
+          type: string
+          description: The URL to download the order's label
+          example: "https://label12345.s3.amazonaws.com/BoxKnight-ShippingLabel-1234567.zpl"
+        recipient:
+          type: object
+          description: The recipient of the order to be delivered.
+          $ref: '#/definitions/Recipient'
+        recipientAddress:
+          type: object
+          description: The addres of the recipient.
+          $ref: '#/definitions/Geocoded_Address'
+        originAddress:
+          type: object
+          description: The addres of where the order should be picked up from
+          $ref: '#/definitions/Geocoded_Address'
+        packageCount:
+          type: integer
+          format: int32
+          description: The number of separate packagesto be delivered for this order.
+          example: 3
+        signatureRequired:
+          type: boolean
+          description: If True, the delivery will not be completed unless a signature is collected from the recipient. If false, best efforts will be made to contact the recipient upon arrival at the recipient address, but may ultimately be left at the doorstep.
+          example: true
+        service:
+          type: string
+          description: >- 
+            The service with which to create the order, which will determine the price and speed of the delivery.
+            The possible values are `SAMEDAY`, `NEXTDAY` or `SCHEDULED`.
+            This can be the `service` from the GET /rates response.
+          example: 'SAMEDAY'
+        notes:
+          type: string
+          description: Any notes related specifically to the destination address.
+          example: The entrance is through the green fence on the left. If no answer, leave behind the black bin.
+            
+      
+    example:
+      {
+      "orders": [
+          {
+              "tasks": [
+                  {
+                      "shortId": "be8ba54c",
+                      "taskType": "DELIVERY",
+                      "id": "zkxji7GipDVxncbbo5Zc3uTS",
+                      "taskStatus": "UNASSIGNED"
+                  }
+              ],
+              "id": "4213-85e2-4686-a21c-4ca9889587a6",
+              "createdAt": "2019-11-25T16:17:22.000Z",
+              "merchantId": "05032132d9d-2132d7-4cad-8114-7b69a4124e740d8",
+              "recipient": {
+                  "phone": "+15142140475",
+                  "name": "Testing Testing"
+              },
+              "recipientAddress": {
+                  "number": "1234",
+                  "street": "Avenue Holland",
+                  "postalCode": "H4A 3C9",
+                  "city": "Montréal",
+                  "sublocality": "Communauté-Urbaine-de-Montréal",
+                  "province": "Québec",
+                  "country": "Canada",
+                  "location": {
+                      "lat": 45.6755719,
+                      "lng": -73.21911979999999
+                  }
+              },
+              "createdBy": "13248f165-3757-4be0-96538-ae064833c8b3",
+              "originAddress": {
+                  "number": "3333",
+                  "street": "Boulevard Bourassa",
+                  "postalCode": "H4R 2A4",
+                  "city": "Montréal",
+                  "sublocality": "Communauté-Urbaine-de-Montréal",
+                  "province": "Québec",
+                  "country": "Canada",
+                  "location": {
+                      "lat": 45.4934762,
+                      "lng": -73.72103080000001
+                  }
+              },
+              "orderStatus": "GEOCODED",
+              "signatureRequired": true,
+              "scanningRequired": true,
+              "validAddress": true,
+              "notes": "Please knock, the buzzer is broken",
+              "labelUrl": "https://labelss3bucketdev1.s3.amazonaws.com/BoxKnight-ShippingLabel-123.zpl",
+              "packageCount": 2
+          },
+          {
+              "tasks": [
+                  {
+                      "taskType": "DELIVERY",
+                      "taskStatus": "UNASSIGNED",
+                      "id": "1234567890-5"
+                  }
+              ],
+              "id": "1fe54116-bc32-4708-adbe-015c781238f2",
+              "createdAt": "2019-11-22T23:48:27.000Z",
+              "merchantId": "1242d9d-4ed7-4cad-8114-7b69afe740d8",
+              "recipient": {
+                  "phone": "+15142140475",
+                  "name": "Private Testing"
+              },
+              "recipientAddress": {
+                  "number": "1234",
+                  "street": "Avenue Holland",
+                  "postalCode": "H4A 3C9",
+                  "city": "Montréal",
+                  "sublocality": "Communauté-Urbaine-de-Montréal",
+                  "province": "Québec",
+                  "country": "Canada",
+                  "location": {
+                      "lat": 45.6755719,
+                      "lng": -73.21911979999999
+                  }
+              },
+              "createdBy": "21348f165-3757-4be0-96538-ae1234833c8b3",
+              "originAddress": {
+                  "number": "3333",
+                  "street": "Boulevard Bourassa",
+                  "postalCode": "H4R 2A4",
+                  "city": "Montréal",
+                  "sublocality": "Communauté-Urbaine-de-Montréal",
+                  "province": "Québec",
+                  "country": "Canada",
+                  "location": {
+                      "lat": 45.4934762,
+                      "lng": -73.72103080000001
+                  }
+              },
+              "orderStatus": "GEOCODED",
+              "signatureRequired": true,
+              "scanningRequired": true,
+              "validAddress": true,
+              "notes": "Please knock, the buzzer is broken",
+              "packageCount": 2
+          }
+      ],
+      "next": {
+          "limit": "2",
+          "startAt": "1fe54116-bc32-4708-adbe-015c784358f2",
+          "createdAt": "2019-12-02T20:45:12.000Z"
+      }
+  }
+        
