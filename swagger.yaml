@@ -3,8 +3,10 @@ info:
   version: 'v1'
   title: "BoxKnight"
   description: Welcome to the BoxKnight API Documentation. You can use the BoxKnight API to requests rates, create an order, delete an order, retrieve a shipping label.
+  x-logo:
+    url: "https://merchant.boxknight.com/static/media/boxknight_header_logo.cd00e5c0.png"
+    background: "#ffffff"
 host: api.boxknight.com
-x-logo: "https://merchant.boxknight.com/static/media/boxknight_header_logo.cd00e5c0.png"
 basePath: /v1
 schemes:
 - https
