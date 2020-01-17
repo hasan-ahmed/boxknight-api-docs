@@ -18,21 +18,25 @@
     ReDoc doesn't change outer page styles
     -->
     <style>
-      .sc-kafWEX .hZCbNs {
-        padding: 20px;
-      }
       body {
         margin: 0;
         padding: 0;
       }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"></script>
   </head>
 
   <body>
-    <redoc
-      native-scroll-bars="true"
-      spec-url="https://raw.githubusercontent.com/hasan-ahmed/boxknight-api-docs/master/swagger.yaml"
-    ></redoc>
-    <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"></script>
+    <div id="redoc-container"></div>
+    <script>
+      Redoc.init(
+        "https://raw.githubusercontent.com/hasan-ahmed/boxknight-api-docs/master/swagger.yaml",
+        {
+          theme: { colors: { primary: { main: "#1890FF" } } },
+          hideDownloadButton: true
+        },
+        document.getElementById("redoc-container")
+      );
+    </script>
   </body>
 </html>
