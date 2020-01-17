@@ -8,6 +8,17 @@ info:
     background: "#ffffff"
 host: api.boxknight.com
 basePath: /v1
+tags:
+- name: "Authentication"
+  description: "Everything about authentication for making API requests"
+- name: "Rates"
+  description: "Everything about shipping rates"
+- name: "Orders"
+  description: "Everything about orders"  
+- name: "Labels"
+  description: "Everything about shipping labels"
+- name: "Pickups"
+  description: "Everything about requesting pickups"
 schemes:
 - https
 consumes:
@@ -35,6 +46,8 @@ paths:
   /auth/token:
     x-summary: Authentication Token
     post:
+      tags:
+        - "Authentication"
       description: >-
         Exchange your username and password for a token that you may include in the header of your requests.
       x-summary: Generate Token
@@ -52,6 +65,8 @@ paths:
   /service:
     x-summary: Service account
     get:
+      tags:
+        - "Authentication"
       description: >-
         Use your admin token to create a service account in order to use our api
       summary: Create Service account
@@ -66,6 +81,8 @@ paths:
   /rates:
     x-summary: Rates
     post:
+      tags:
+        - "Rates"
       description: >-
         This endpoint retrieves a list of all the shipping rates for a given potential order in accordance to the pricing 
         structure established when creating your merchant organization. If either the origin postal code or
@@ -88,6 +105,8 @@ paths:
   /orders:
     x-summary: Orders
     post:
+      tags:
+        - "Orders"
       description: >-
         This endpoint creates a new order to be delivered by BoxKnight. This operation is treated as a long running task. As soon as your request is validated,
         you will receive a `200 OK` response with the order `id` while processing continues in the background. 
@@ -107,6 +126,8 @@ paths:
           schema:
             $ref: '#/definitions/OrderCreateSuccessResponse'
     get:
+      tags:
+        - "Orders"
       description: >-
         This endpoint is doing a batch get all the orders associated with the service account
       summary: Get multiple orders
@@ -138,6 +159,8 @@ paths:
   /orders/{id}:
     x-summary: Get and Delete Order
     get:
+      tags:
+        - "Orders"
       description: >-
         This endpoint get the order's informations.
       summary: Get Order by Id
@@ -157,6 +180,8 @@ paths:
           description: 'Successfull response'
 
     delete:
+      tags:
+        - "Orders"
       description: >-
         This endpoint delete the order's informations.
       summary: Delete Order by Id
@@ -178,6 +203,8 @@ paths:
   /orders/pickups:
     x-summary: Pickups
     post:
+      tags:
+        - "Pickups"
       description: >-
         This endpoint creates a new pickup to be delivered by BoxKnight. 
       summary: Create a New Pickup
@@ -199,6 +226,8 @@ paths:
   /orders/pickups/{id}:
     x-summary: Get and Delete Pickup
     get:
+      tags:
+        - "Pickups"
       description: >-
         This endpoint get the pickup's informations.
       summary: Get Pickup by Id
@@ -218,6 +247,8 @@ paths:
           description: 'Successfull response'
 
     delete:
+      tags:
+        - "Pickups"
       description: >-
         This endpoint delete the pickup's informations.
       summary: Delete Pickup by Id
@@ -239,6 +270,8 @@ paths:
   /labels/{id}:
     x-summary: Labels
     get:
+      tags:
+        - "Labels"
       description: >
         Get the shipping label for an order by specifying the order `ID`.
       summary: Get label by Order Id
@@ -259,54 +292,6 @@ paths:
         404:
           description: The requested label was not found.  
 definitions:
-  Question:
-    title: Question
-    type: object
-    properties:
-      question:
-        type: string
-      published_at:
-        type: string
-      choices:
-        type: array
-        items:
-          $ref: '#/definitions/Choice'
-    required:
-      - question
-      - published_at
-      - choices
-  Choice:
-    title: Choice
-    type: object
-    properties:
-      votes:
-        type: integer
-        format: int32
-      choice:
-        type: string
-    required:
-      - votes
-      - choice
-  QuestionRequest:
-    title: Question Request
-    type: object
-    properties:
-      question:
-        type: string
-      choices:
-        type: array
-        items:
-          type: string
-    required:
-      - question
-      - choices
-    example:
-      question: Favourite programming language?
-      choices:
-        - Swift
-        - Python
-        - Objective-C
-        - Ruby
   Label:
     title: Label
     type: object
@@ -405,7 +390,6 @@ definitions:
         type: object
         description: The GPS location of that address
         $ref: '#/definitions/Location'
-        
   Location:
     title: Location
     type: object
