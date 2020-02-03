@@ -62,7 +62,7 @@ paths:
           description: 'Sucessful Response'
           schema: 
             $ref: '#/definitions/AuthTokenResponse'
-  /service:
+  /users/service:
     x-summary: Service account
     get:
       tags:
