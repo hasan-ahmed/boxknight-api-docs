@@ -15,8 +15,6 @@ tags:
   description: "Everything about shipping rates"
 - name: "Orders"
   description: "Everything about orders"  
-- name: "Labels"
-  description: "Everything about shipping labels"
 - name: "Pickups"
   description: "Everything about requesting pickups"
 schemes:
