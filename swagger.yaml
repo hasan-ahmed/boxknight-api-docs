@@ -294,30 +294,6 @@ paths:
             $ref: "#/definitions/Pickup"
           description: 'Successfull response'
           
-  /labels/{id}:
-    x-summary: Labels
-    get:
-      tags:
-        - "Labels"
-      description: >
-        Get the shipping label for an order by specifying the order `ID`.
-      summary: Get label by Order Id
-      security:
-        - OAuth2: []
-        - Authorization-Header: []
-      parameters:
-      - name: id
-        in: path
-        description: ID of the order for which the label is being request.
-        required: true
-        type: string
-      responses:
-        200:
-          description: Successful response, with a representation of the Label.
-          schema:
-            $ref: "#/definitions/Label"
-        404:
-          description: The requested label was not found.  
 definitions:
   Label:
     title: Label
