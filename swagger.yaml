@@ -185,8 +185,8 @@ paths:
       tags:
         - "Orders"
       description: >-
-        This endpoint get the order's informations.
-      summary: Get Order by Id
+        This endpoint modify the delivery window of the order.
+      summary: Update order delivery window
       security:
         - OAuth2: []
         - Authorization-Header: []
@@ -200,7 +200,7 @@ paths:
         in: body
         required: true
         schema:
-          $ref: '#/definitions/OrderCreateRequest'
+          $ref: '#/definitions/WindowPatchingRequest'
       responses:
         200:
           description: 'Successfull response'
