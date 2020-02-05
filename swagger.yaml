@@ -475,6 +475,7 @@ definitions:
       - recipientAddress
       - originAddress
       - packageCount
+      - signatureRequired
     properties:
       recipient:
         type: object
