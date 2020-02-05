@@ -178,6 +178,27 @@ paths:
           schema:
             $ref: "#/definitions/Order"
           description: 'Successfull response'
+    
+    delete:
+      tags:
+        - "Orders"
+      description: >-
+        This endpoint delete the order's informations.
+      summary: Delete Order by Id
+      security:
+        - OAuth2: []
+        - Authorization-Header: []
+      parameters:
+      - name: id
+        in: path
+        description: The id of the order that will be deleted
+        required: true
+        type: string
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Order"
+          description: 'Successfull response'
 
   /orders/{id}/window:
     x-summary: Update order delivery window
@@ -205,26 +226,6 @@ paths:
         200:
           description: 'Successfull response'
 
-    delete:
-      tags:
-        - "Orders"
-      description: >-
-        This endpoint delete the order's informations.
-      summary: Delete Order by Id
-      security:
-        - OAuth2: []
-        - Authorization-Header: []
-      parameters:
-      - name: id
-        in: path
-        description: The id of the order that will be deleted
-        required: true
-        type: string
-      responses:
-        200:
-          schema:
-            $ref: "#/definitions/Order"
-          description: 'Successfull response'
 
   /orders/pickups:
     x-summary: Pickups
