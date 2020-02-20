@@ -428,6 +428,7 @@ definitions:
        type: string
        description: The estimate date of delivery depending on merchant
        example: "2019-10-29"
+
   RateOptions:
     title: Rate options
     type: object
@@ -593,8 +594,12 @@ definitions:
         example: true
       labelUrl:
         type: string
-        description: The URL to download the order's label
+        description: The URL to download the order's ZPL label
         example: "https://label12345.s3.amazonaws.com/BoxKnight-ShippingLabel-1234567.zpl"
+      pdfLabelUrl:
+        type: string
+        description: The URL to download the order's PDF label
+        example: "https://label12345.s3.amazonaws.com/BoxKnight-ShippingLabel-1234567.pdf"
       recipient:
         type: object
         description: The recipient of the order to be delivered.
@@ -639,6 +644,7 @@ definitions:
         type: number
         description: epoch(milli) of the end of pickup window (need to be later than completeAfter)
         example: 1578439950000
+      
 
   Pickup:
     title: Pickup object
@@ -814,8 +820,12 @@ definitions:
           example: true
         labelUrl:
           type: string
-          description: The URL to download the order's label
+          description: The URL to download the order's ZPL label
           example: "https://label12345.s3.amazonaws.com/BoxKnight-ShippingLabel-1234567.zpl"
+        pdfLabelUrl:
+          type: string
+          description: The URL to download the order's PDF label
+          example: "https://label12345.s3.amazonaws.com/BoxKnight-ShippingLabel-1234567.pdf"
         recipient:
           type: object
           description: The recipient of the order to be delivered.
@@ -902,6 +912,7 @@ definitions:
               "validAddress": true,
               "notes": "Please knock, the buzzer is broken",
               "labelUrl": "https://labelss3bucketdev1.s3.amazonaws.com/BoxKnight-ShippingLabel-123.zpl",
+              "pdfLabelUrl": "https://labelss3bucketdev1.s3.amazonaws.com/BoxKnight-ShippingLabel-123.pdf",
               "packageCount": 2
           },
           {
