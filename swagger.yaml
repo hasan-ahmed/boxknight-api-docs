@@ -62,7 +62,7 @@ paths:
             $ref: '#/definitions/AuthTokenResponse'
   /users/service:
     x-summary: Service account
-    get:
+    post:
       tags:
         - "Service Accounts & Tokens"
       description: >-
