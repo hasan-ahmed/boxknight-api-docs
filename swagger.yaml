@@ -499,6 +499,10 @@ definitions:
         type: number
         description: epoch(milli) of the end of pickup window (need to be later than completeAfter)
         example: 1578439950000
+      merchantDisplayName:
+        type: string
+        description: A display name that's going to be shown in the order's label
+        example: Metro Fleury No 2
   WindowPatchingRequest:
     title: Order window update
     type: object
@@ -644,6 +648,10 @@ definitions:
         type: number
         description: epoch(milli) of the end of pickup window (need to be later than completeAfter)
         example: 1578439950000
+      merchantDisplayName:
+        type: string
+        description: A display name that's going to be shown in the order's label
+        example: Metro Fleury No 2
       
 
   Pickup:
