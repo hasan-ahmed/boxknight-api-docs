@@ -550,6 +550,12 @@ definitions:
         type: string
         description: Any notes related specifically to the destination address.
         example: The entrance is through the green fence on the left. If no answer, leave behind the black bin.
+      orderIds:
+        type: array
+        items:
+          type: string
+        description: A list of orderIds that this pickup is related to.
+        example: ["93e11b39-0af8-40bb-742a-912375a09743","43e11a39-0af8-40bb-742a-962345z07582","93easle9-0af8-43bb-742a-962345z09623"]
         
   OrderCreateSuccessResponse:
     title: Order Create Success Response
@@ -699,7 +705,12 @@ definitions:
         type: string
         description: Any notes related specifically to the destination address.
         example: The entrance is through the green fence on the left. If no answer, leave behind the black bin.
-          
+      orderIds:
+        type: array
+        items:
+          type: string
+        description: A list of orderIds that this pickup is related to.
+        example: ["93e11b39-0af8-40bb-742a-912375a09743","43e11a39-0af8-40bb-742a-962345z07582","93easle9-0af8-43bb-742a-962345z09623"]
   OrderStatusPatchRequest:
     title: Order Status Patch Request
     properties:
