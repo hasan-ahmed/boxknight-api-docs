@@ -291,6 +291,33 @@ paths:
           schema:
             $ref: "#/definitions/Pickup"
           description: 'Successfull response'
+  /orders/pickups/{id}/orderIds:
+    x-summary: Patch Pickup's orderIds
+    patch:
+      tags:
+        - "Pickups"
+      description: >-
+        This endpoint patch the pickup's orderIds, it will replace the list from the pickup to the new provided list.
+      summary: Patch Pickup OrderIds
+      security:
+        - OAuth2: []
+        - Authorization-Header: []
+      parameters:
+      - name: id
+        in: path
+        description: The id of the pickup that will be created
+        required: true
+        type: string
+      - name: body
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/PatchPickupOrderIdsReq'
+      responses:
+        200:
+          schema:
+            $ref: "#/definitions/Pickup"
+          description: 'Successfull response'
           
 definitions:
   Label:
@@ -729,6 +756,16 @@ definitions:
         type: string
         description: The password for the account the auth token is being request for. 
         example: 'userpassword'
+
+  PatchPickupOrderIdsReq:
+    title: Patch Pickup's orderIds request
+    properties:
+      orderIds: 
+        type: array
+        items:
+          type: string
+        description: The list of orderIds we want to replace the pickup's one to.
+        example: ["2375a0as-0af8-40bb-742a-912375a09743","e11a3339-0af8-40bb-742a-962345ze11a3","ask12le9-0af8-43bb-742a-9623e11a3s23"]
   
   ServiceAccountResponse:
     title: Service Account response
