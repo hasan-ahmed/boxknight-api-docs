@@ -345,6 +345,10 @@ definitions:
         type: string
         description: Notes relating spoecifically to the recipient
         example: Do not text, call instead.
+      email:
+        type: string
+        description: email of the recipient
+        example: charles.carmichael@boxknight.com
     required:
       - name
       - phone
