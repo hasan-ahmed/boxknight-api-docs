@@ -16,7 +16,7 @@ tags:
 - name: "Orders"
   description: "Everything about orders"  
 - name: "Pickups"
-  description: "Everything about requesting pickups"
+  description: "Pickups only need to be requested for certain merchants. Please contact your account manager to verify if you need to do so."
 schemes:
 - https
 consumes:
@@ -257,6 +257,7 @@ paths:
         - "Pickups"
       description: >-
         This endpoint creates a new pickup to be delivered by BoxKnight. 
+        -- Pickups only need to be requested for certain merchants. Please contact your account manager to verify if you need to do so. --
       summary: Create a New Pickup
       security:
         - OAuth2: []
@@ -279,7 +280,8 @@ paths:
       tags:
         - "Pickups"
       description: >-
-        This endpoint get the pickup's informations.
+        This endpoint get the pickup's informations. 
+        -- Pickups only need to be requested for certain merchants. Please contact your account manager to verify if you need to do so. --
       summary: Get Pickup by Id
       security:
         - OAuth2: []
@@ -300,7 +302,8 @@ paths:
       tags:
         - "Pickups"
       description: >-
-        This endpoint delete the pickup's informations.
+        This endpoint delete the pickup's informations. 
+        -- Pickups only need to be requested for certain merchants. Please contact your account manager to verify if you need to do so. -- 
       summary: Delete Pickup by Id
       security:
         - OAuth2: []
@@ -322,7 +325,8 @@ paths:
       tags:
         - "Pickups"
       description: >-
-        This endpoint patch the pickup's orderIds, it will replace the list from the pickup to the new provided list.
+        This endpoint patch the pickup's orderIds, it will replace the list from the pickup to the new provided list. 
+        -- Pickups only need to be requested for certain merchants. Please contact your account manager to verify if you need to do so. --
       summary: Patch Pickup OrderIds
       security:
         - OAuth2: []
