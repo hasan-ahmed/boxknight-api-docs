@@ -100,6 +100,31 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/ArrayOfRates'
+  /labels/{orderId}:
+    x-summary: Labels
+    post:
+      tags:
+        - "Labels"
+      description: >-
+        This endpoint retrieves a label (pdf or zpl) from an orderId.
+      summary: Retrieve Labels
+      parameters:
+      - name: orderId
+        in: path
+        description: The id of the order that we want to get the label from
+        required: true
+        type: string
+      - name: format
+        in: query
+        description: format of the lable (zpl or pdf)
+        required: true
+        type: string
+      security:
+        - Oauth2: []
+        - Authorization-Header: []
+      responses: 
+        200: 
+          description: 'the label in zpl or pdf file'
   /orders:
     x-summary: Orders
     post:
