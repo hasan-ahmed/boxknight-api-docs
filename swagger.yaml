@@ -536,7 +536,7 @@ definitions:
         example: true
       service:
         type: string
-        default: "SCHEDULED"
+        default: "NEXTDAY"
         description: >- 
           The service with which to create the order, which will determine the price and speed of the delivery.
           The possible values are `SAMEDAY`, `NEXTDAY` or `SCHEDULED`.
@@ -551,14 +551,6 @@ definitions:
         type: string
         description: A reference number from your side that we can use to contact you about the order
         example: shopifyid1234
-      completeAfter:
-        type: number
-        description: epoch(milli) of the beginning of pickup window (need to be later than right now)
-        example: 1578439750000
-      completeBefore:
-        type: number
-        description: epoch(milli) of the end of pickup window (need to be later than completeAfter)
-        example: 1578439950000
       merchantDisplayName:
         type: string
         description: A display name that's going to be shown in the order's label
