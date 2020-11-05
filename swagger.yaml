@@ -534,6 +534,10 @@ definitions:
         type: boolean
         description: If True, the delivery will not be completed unless a signature is collected from the recipient. If false, best efforts will be made to contact the recipient upon arrival at the recipient address, but may ultimately be left at the doorstep.
         example: true
+      isBusinessAddress:
+        type: boolean
+        description: This optional field let's us know if the recipient address is a business address. This allows us to do our best to ensure that the delivery is completed during business hours, or retrieve an alternate address from the recipient.
+        example: true
       service:
         type: string
         default: "NEXTDAY"
