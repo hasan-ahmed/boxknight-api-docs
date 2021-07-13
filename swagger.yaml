@@ -516,7 +516,6 @@ definitions:
       - recipientAddress
       - originAddress
       - packageCount
-      - signatureRequired
     properties:
       recipient:
         type: object
@@ -535,10 +534,6 @@ definitions:
         format: int32
         description: The number of separate packagesto be delivered for this order.
         example: 3
-      signatureRequired:
-        type: boolean
-        description: If True, the delivery will not be completed unless a signature is collected from the recipient. If false, best efforts will be made to contact the recipient upon arrival at the recipient address, but may ultimately be left at the doorstep.
-        example: true
       service:
         type: string
         default: "NEXTDAY"
@@ -686,7 +681,7 @@ definitions:
         example: 3
       signatureRequired:
         type: boolean
-        description: If True, the delivery will not be completed unless a signature is collected from the recipient. If false, best efforts will be made to contact the recipient upon arrival at the recipient address, but may ultimately be left at the doorstep.
+        description: If True, the delivery will not be completed unless a signature is collected from the recipient. If false, best efforts will be made to contact the recipient upon arrival at the recipient address, but may ultimately be left at the doorstep. This value can no longer be set for individual orders. It is a merchant wide setting.
         example: true
       service:
         type: string
