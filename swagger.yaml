@@ -107,7 +107,7 @@ paths:
       tags:
         - "Labels"
       description: >-
-        This endpoint retrieves a label (pdf or zpl) from an orderId.
+        This endpoint retrieves a label (zpl, pdf or pdf_letter) from an orderId. The pdf_letter format fits a full standard letter page with a dotted line to cut the label.
       summary: Retrieve Labels
       parameters:
       - name: orderId
@@ -117,7 +117,7 @@ paths:
         type: string
       - name: format
         in: query
-        description: format of the label (zpl or pdf)
+        description: format of the label (zpl, pdf or pdf_letter)
         required: true
         type: string
       security:
