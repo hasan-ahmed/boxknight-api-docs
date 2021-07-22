@@ -101,6 +101,33 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/ArrayOfRates'
+  /rates/windows:
+    x-summary: Windows
+    get:
+      tags:
+        - "Windows"
+      description: >-
+        This endpoint retrieves a list of all the next available windows of a scheduled delivery for the merchant. 
+      summary: Retrieve Scheduled Windows
+      parameters:
+        - name: originPostalCode
+          in: query
+          description: Postal code of the destination address
+          required: true
+          type: string
+        - name: postalCode
+          in: query
+          description: Postal code of the destination address
+          required: true
+          type: string
+      security:
+        - Oauth2: []
+        - Authorization-Header: []
+      responses: 
+        200: 
+          description: ''
+          schema:
+            $ref: '#/definitions/ArrayOfWindows'
   /labels/{orderId}:
     x-summary: Labels
     get:
@@ -494,6 +521,19 @@ definitions:
        description: The estimate date of delivery depending on merchant
        example: "2019-10-29"
 
+  TimeWindow:
+    title: TimeWindow
+    type: object
+    properties:
+      timeStart:
+        description: Start time of a specific window (HH:mm)
+        type: string
+        example: '10:00'
+      timeEnd:
+        description: End time of a specific window (HH:mm)
+        type: string
+        example: '22:00'
+
   RateOptions:
     title: Rate options
     type: object
@@ -811,6 +851,38 @@ definitions:
         type: string
         description: The Auth token to be included in the Authorization header of your requests
         example: 'token'
+
+  ArrayOfWindows:
+    type: array
+    items:
+      type: object
+      properties:
+        weekday: 
+          type: string
+          description: The weekday of this specific window (monday-sunday)
+        deliveryWindow:
+          type: object
+          description: Time window for delivery
+          $ref: '#/definitions/TimeWindow'
+        cutoffTime: 
+          type: string
+          description: The cutoff time of this specific window (HH:mm)
+        date:
+          type: string
+          description: The date of this specific window (YYYY-MM-DD)
+    example:
+      - weekday: "wednesday"
+        deliveryWindow: { timeStart: '10:00', timeEnd: '13:00' }
+        cutoffTime: "08:00"
+        date:  "2019-10-23"
+      - weekday: "wednesday"
+        deliveryWindow: { timeStart: '19:00', timeEnd: '22:00' }
+        cutoffTime: "13:00"
+        date:  "2019-10-23"
+      - weekday: "thursday"
+        deliveryWindow: { timeStart: '10:00', timeEnd: '13:00' }
+        cutoffTime: "08:00"
+        date:  "2019-10-24"
   ArrayOfRates:
     type: array
     items:
