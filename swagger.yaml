@@ -556,6 +556,7 @@ definitions:
       - recipientAddress
       - originAddress
       - packageCount
+      - signatureRequired
     properties:
       recipient:
         type: object
@@ -595,6 +596,10 @@ definitions:
         type: string
         description: A display name that's going to be shown in the order's label
         example: Metro Fleury No 2
+      signatureRequired:
+        type: boolean
+        description: (Deactivated for Covid-19) Always set to false. Flag to set signature required for this order
+        example: false
   WindowPatchingRequest:
     title: Order window update
     type: object
