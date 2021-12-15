@@ -563,8 +563,8 @@ definitions:
       - height
       - unit
 
-  SizeOptions:
-    title: SizeOptions
+  WeightOptions:
+    title: WeightOptions
     type: object
     properties:
       weight:
@@ -579,7 +579,7 @@ definitions:
     required:
       - weight
       - unit
-      
+
   RateOptions:
     title: Rate options
     type: object
