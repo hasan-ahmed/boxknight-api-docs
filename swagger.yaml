@@ -537,6 +537,7 @@ definitions:
   SizeOptions:
     title: SizeOptions
     type: object
+    description: The size options for the order. Will return empty array if oversized. The maximum size is 85 inches (215.9cm) in size calculated by using the formula "length + grith (height*2 + width*2)"".
     properties:
       length:
         type: integer
@@ -566,6 +567,7 @@ definitions:
   WeightOptions:
     title: WeightOptions
     type: object
+    description: The weight options for the order. Will return empty array if overweight. Maximum weight is 44 lbs (20 kg).
     properties:
       weight:
         type: integer
@@ -595,11 +597,9 @@ definitions:
         type: string
         example: 'H4R2A4'  
       sizeOptions:
-        description: The size options for the order. Will return empty array if oversized. The maximum size is 85 inches (215.9cm) in size calculated by using the formula "length + grith (height*2 + width*2)"".
         type: object
         $ref: '#/definitions/SizeOptions' 
       weightOptions:
-        description: The weight options for the order. Will return empty array if overweight. Maximum weight is 44 lbs (20 kg).
         type: object
         $ref: '#/definitions/WeightOptions' 
 
