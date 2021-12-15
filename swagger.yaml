@@ -534,29 +534,6 @@ definitions:
         type: string
         example: '22:00'
 
-  RateOptions:
-    title: Rate options
-    type: object
-    required:
-      - postalCode
-    properties:
-      postalCode:
-        description: The postal code of the recipient of the order
-        type: string
-        example: 'H4X1Z5'
-      originPostalCode:
-        description: The origin postal code for the order. If this parameter is omitted, it will default to the pickup location set up in your merchant organization.
-        type: string
-        example: 'H4R2A4'  
-      sizeOptions:
-        description: The size options for the order. Will return empty array if oversized. The maximum size is 85 inches (215.9cm) in size calculated by using the formula "length + grith (height*2 + width*2)"".
-        type: object
-        $ref: '#/definitions/SizeOptions' 
-      weightOptions:
-        description: The weight options for the order. Will return empty array if overweight. Maximum weight is 44 lbs (20 kg).
-        type: object
-        $ref: '#/definitions/WeightOptions' 
-
   SizeOptions:
     title: SizeOptions
     type: object
@@ -602,6 +579,29 @@ definitions:
     required:
       - weight
       - unit
+      
+  RateOptions:
+    title: Rate options
+    type: object
+    required:
+      - postalCode
+    properties:
+      postalCode:
+        description: The postal code of the recipient of the order
+        type: string
+        example: 'H4X1Z5'
+      originPostalCode:
+        description: The origin postal code for the order. If this parameter is omitted, it will default to the pickup location set up in your merchant organization.
+        type: string
+        example: 'H4R2A4'  
+      sizeOptions:
+        description: The size options for the order. Will return empty array if oversized. The maximum size is 85 inches (215.9cm) in size calculated by using the formula "length + grith (height*2 + width*2)"".
+        type: object
+        $ref: '#/definitions/SizeOptions' 
+      weightOptions:
+        description: The weight options for the order. Will return empty array if overweight. Maximum weight is 44 lbs (20 kg).
+        type: object
+        $ref: '#/definitions/WeightOptions' 
 
   OrderCreateRequest:
     title: Order Request
