@@ -548,6 +548,61 @@ definitions:
         description: The origin postal code for the order. If this parameter is omitted, it will default to the pickup location set up in your merchant organization.
         type: string
         example: 'H4R2A4'  
+      sizeOptions:
+        description: The size options for the order. Will return empty array if oversized. The maximum size is 85 inches (215.9cm) in size calculated by using the formula "length + grith (height*2 + width*2)"".
+        type: object
+        $ref: '#/definitions/SizeOptions' 
+      weightOptions:
+        description: The weight options for the order. Will return empty array if overweight. Maximum weight is 44 lbs (20 kg).
+        type: object
+        $ref: '#/definitions/WeightOptions' 
+
+  SizeOptions:
+    title: SizeOptions
+    type: object
+    properties:
+      length:
+        type: integer
+        format: int32
+        description: The length of the package
+        example: 20
+      width:
+        type: integer
+        format: int32
+        description: The width of the package
+        example: 15
+      height:
+        type: integer
+        format: int32
+        description: The height of the package
+        example: 15
+      unit:
+        type: string
+        description: The unit of measurement for the package. Can be either `cm` or `inch`.
+        example: inch
+    required:
+      - length
+      - width
+      - height
+      - unit
+
+  SizeOptions:
+    title: SizeOptions
+    type: object
+    properties:
+      weight:
+        type: integer
+        format: int32
+        description: The weight of the package
+        example: 20
+      unit:
+        type: string
+        description: The unit of weight for the package. Can be either `lb` or `kg`.
+        example: lb
+    required:
+      - weight
+      - unit
+
   OrderCreateRequest:
     title: Order Request
     type: object
