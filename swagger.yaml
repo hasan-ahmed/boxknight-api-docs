@@ -564,6 +564,13 @@ definitions:
       - height
       - unit
 
+  ArrayOfSizeOptions:
+    type: array
+    description: The size options for the order. Will return empty array if one of the package is oversized. The maximum size is 85 inches (215.9cm) in size calculated by using the formula "length + grith (height*2 + width*2)"".
+    items:
+      type: object
+      ref: '#/definitions/SizeOptions'
+
   WeightOptions:
     title: WeightOptions
     type: object
@@ -581,6 +588,13 @@ definitions:
     required:
       - weight
       - unit
+  
+  ArrayOfWeightOptions:
+    type: array
+    description: The weight options for the order. Will return empty array if one of the package overweight. Maximum weight is 44 lbs (20 kg).
+    items:
+      type: object
+      ref: '#/definitions/WeightOptions'
 
   RateOptions:
     title: Rate options
@@ -602,6 +616,12 @@ definitions:
       weightOptions:
         type: object
         $ref: '#/definitions/WeightOptions' 
+      multiSizeOptions:
+        type: array
+        $ref: '#/definitions/ArrayOfSizeOptions'
+      multiWeightOptions:
+        type: array
+        $ref: '#/definitions/ArrayOfWeightOptions'
 
   OrderCreateRequest:
     title: Order Request
