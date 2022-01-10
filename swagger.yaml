@@ -617,11 +617,11 @@ definitions:
         type: object
         $ref: '#/definitions/WeightOptions' 
       multiSizeOptions:
-        type: object
-        $ref: '#/definitions/ArrayOfSizeOptions'
+        type: array
+        $ref: '#/definitions/SizeOptions'
       multiWeightOptions:
-        type: object
-        $ref: '#/definitions/ArrayOfWeightOptions'
+        type: array
+        $ref: '#/definitions/WeightOptions'
 
   OrderCreateRequest:
     title: Order Request
