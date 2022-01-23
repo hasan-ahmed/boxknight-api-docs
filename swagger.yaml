@@ -564,6 +564,51 @@ definitions:
       - height
       - unit
 
+  ArrayOfPackages:
+    type: array
+    description: Array of packages which contains the package informations for size and weight.
+    items:
+      type: object
+      properties:
+        refNumber:
+          type: string
+          description: The reference number of the package.
+          example: '12345'
+        weightOptions:
+          type: object
+          properties:
+            weight:
+              type: number
+              format: double
+              description: The weight of the package.
+              example: 2.5
+            unit:
+              type: string
+              description: The unit of measurement for the package. Can be either `kg` or `lb`.
+              example: kg
+        sizeOptions:
+          type: object
+          properties:
+            length:
+              type: integer
+              format: int32
+              description: The length of the package.
+              example: 20
+            width:
+              type: integer
+              format: int32
+              description: The width of the package.
+              example: 15
+            height:
+              type: integer
+              format: int32
+              description: The height of the package.
+              example: 15
+            unit:
+              type: string
+              description: The unit of measurement for the package. Can be either `cm` or `inch`.
+              example: inch
+
   ArrayOfSizeOptions:
     type: array
     description: The size options for the order. Will return empty array if one of the package is oversized. The maximum size is 85 inches (215.9cm) in size calculated by using the formula "length + grith (height*2 + width*2)"".
@@ -638,18 +683,9 @@ definitions:
         description: The origin postal code for the order. If this parameter is omitted, it will default to the pickup location set up in your merchant organization.
         type: string
         example: 'H4R2A4'  
-      sizeOptions:
-        type: object
-        $ref: '#/definitions/SizeOptions' 
-      weightOptions:
-        type: object
-        $ref: '#/definitions/WeightOptions' 
-      multiSizeOptions:
-        type: array
-        $ref: '#/definitions/ArrayOfSizeOptions'
-      multiWeightOptions:
-        type: array
-        $ref: '#/definitions/ArrayOfWeightOptions'
+      packages:
+        type: arrau
+        $ref: '#/definitions/ArrayOfPackages' 
 
   OrderCreateRequest:
     title: Order Request
