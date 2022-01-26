@@ -684,7 +684,7 @@ definitions:
         type: string
         example: 'H4R2A4'  
       packages:
-        type: arrau
+        type: array
         $ref: '#/definitions/ArrayOfPackages' 
 
   OrderCreateRequest:
@@ -726,7 +726,6 @@ definitions:
         type: string
         description: Any notes related specifically to the destination address.
         example: The entrance is through the green fence on the left. If no answer, leave behind the black bin.
-          
       refNumber:
         type: string
         description: A reference number from your side that we can use to contact you about the order
@@ -739,6 +738,9 @@ definitions:
         type: boolean
         description: (Deactivated for Covid-19) Always set to false. Flag to set signature required for this order
         example: false
+      packages:
+        type: array
+        $ref: '#/definitions/ArrayOfPackages'
   WindowPatchingRequest:
     title: Order window update
     type: object
